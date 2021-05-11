@@ -9,12 +9,9 @@ func TestAdd(t *testing.T) {
 	if sum != want {
 		t.Errorf("sum: %d,wnat: %d", sum, want)
 	}
-
 }
 func ExampleAdd() {
 	sum := Add(1, 5)
-
 	fmt.Println(sum)
 	//Output: 6
-
 }
