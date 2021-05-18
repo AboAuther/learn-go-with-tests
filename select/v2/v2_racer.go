@@ -1,6 +1,9 @@
 package racer
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 func Racer(a, b string) (winner string) {
 	select {
@@ -13,7 +16,11 @@ func Racer(a, b string) (winner string) {
 func ping(url string) chan struct{} {
 	ch := make(chan struct{})
 	go func() {
-		_, _ = http.Get(url)
+		resp, err := http.Get(url)
+		if err != nil {
+			fmt.Printf("error occurred while fetching page, error: %s", err.Error())
+		}
+		defer resp.Body.Close()
 		close(ch)
 	}()
 	return ch

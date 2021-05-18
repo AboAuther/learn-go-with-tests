@@ -24,7 +24,11 @@ func ConfigurableRacer(a, b string, timeout time.Duration) (winner string, error
 func ping(url string) chan struct{} {
 	ch := make(chan struct{})
 	go func() {
-		_, _ = http.Get(url)
+		resp, err := http.Get(url)
+		if err != nil {
+			fmt.Printf("error occurred while fetching page, error: %s", err.Error())
+		}
+		defer resp.Body.Close()
 		close(ch)
 	}()
 	return ch
