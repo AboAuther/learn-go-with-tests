@@ -52,10 +52,17 @@ func TestWalk(t *testing.T) {
 		{
 			"Slices",
 			[]Profile{
-				{33, "shanxi"},
-				{34, "hunan"},
+				{33, "London"},
+				{34, "Reykjavík"},
 			},
-			[]string{"shanxi", "hunan"},
+			[]string{"London", "Reykjavík"},
+		}, {
+			"Arrays",
+			[2]Profile{
+				{20, "shanxi"},
+				{21, "ningxia"},
+			},
+			[]string{"shanxi", "ningxia"},
 		},
 	}
 	for _, test := range cases {
