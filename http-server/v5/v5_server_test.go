@@ -18,6 +18,7 @@ func (s *StubPlayerStore) GetPlayerScore(name string) int {
 }
 func (s *StubPlayerStore) RecordWin(name string) {
 	s.winCalls = append(s.winCalls, name)
+	fmt.Print(1)
 }
 func TestGETPlayers(t *testing.T) {
 	store := StubPlayerStore{
