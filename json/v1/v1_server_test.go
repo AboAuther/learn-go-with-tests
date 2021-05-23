@@ -18,7 +18,6 @@ func (s *StubPlayerStore) GetPlayerScore(name string) int {
 }
 func (s *StubPlayerStore) RecordWin(name string) {
 	s.winCalls = append(s.winCalls, name)
-	fmt.Print(1)
 }
 func TestGETPlayers(t *testing.T) {
 	store := StubPlayerStore{
@@ -29,38 +28,26 @@ func TestGETPlayers(t *testing.T) {
 		nil,
 	}
 	server := &PlayerServer{&store}
-	tests := []struct {
-		name               string
-		player             string
-		expectedHTTPStatus int
-		expectedScore      string
-	}{
-		{
-			name:               "return lrg's score",
-			player:             "lrg",
-			expectedHTTPStatus: http.StatusOK,
-			expectedScore:      "20",
-		}, {
-			name:               "return chj's score",
-			player:             "chj",
-			expectedHTTPStatus: http.StatusOK,
-			expectedScore:      "10",
-		}, {
-			name:               "return 404 on missing players",
-			player:             "lyl",
-			expectedHTTPStatus: http.StatusNotFound,
-			expectedScore:      "0",
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			request := newGetScoreRequest(tt.player)
-			response := httptest.NewRecorder()
-			server.ServeHTTP(response, request)
-			assertStatus(t, response.Code, tt.expectedHTTPStatus)
-			assertResponseBody(t, response.Body.String(), tt.expectedScore)
-		})
-	}
+	t.Run("return lrg's score", func(t *testing.T) {
+		request := newGetScoreRequest("lrg")
+		response := httptest.NewRecorder()
+		server.ServeHTTP(response, request)
+		assertStatus(t, response.Code, http.StatusOK)
+		assertResponseBody(t, response.Body.String(), "20")
+	})
+	t.Run("return chj's score", func(t *testing.T) {
+		request := newGetScoreRequest("chj")
+		response := httptest.NewRecorder()
+		server.ServeHTTP(response, request)
+		assertStatus(t, response.Code, http.StatusOK)
+		assertResponseBody(t, response.Body.String(), "10")
+	})
+	t.Run("return 404 on missing players", func(t *testing.T) {
+		request := newGetScoreRequest("lyl")
+		response := httptest.NewRecorder()
+		server.ServeHTTP(response, request)
+		assertStatus(t, response.Code, http.StatusNotFound)
+	})
 }
 func TestStoreWins(t *testing.T) {
 	store := StubPlayerStore{

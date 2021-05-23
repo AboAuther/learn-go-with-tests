@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -21,7 +20,6 @@ func (i *InMemoryPlayerStore) RecordWin(name string) {
 	i.lock.Lock()
 	defer i.lock.Unlock()
 	i.store[name]++
-	fmt.Print(i.store[name])
 }
 func (i *InMemoryPlayerStore) GetPlayerScore(name string) int {
 	i.lock.Lock()
